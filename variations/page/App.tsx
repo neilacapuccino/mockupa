@@ -1,4 +1,4 @@
-// ONE page, NINE apps - pick one with the buttons.
+// ONE page, TEN apps - pick one with the buttons.
 // This page does NOT have its own app code: it just shows each variation's
 // frontend/src/App.tsx (the same file that runs when you start that frontend on its own).
 // All nine stay loaded; the ones you didn't pick are only hidden,
@@ -13,6 +13,7 @@ import CafeOrders from "../6-cafeorders/frontend/src/App";
 import ClassPortal from "../7-classportal/frontend/src/App";
 import ForumBoard from "../8-forumboard/frontend/src/App";
 import EventPass from "../9-eventpass/frontend/src/App";
+import SkyControl from "../10-skycontrol/frontend/src/App";
 
 const APPS = [
   { key: "studynotes", label: "1. StudyNotes", Component: StudyNotes },
@@ -24,6 +25,7 @@ const APPS = [
   { key: "classportal", label: "7. ClassPortal", Component: ClassPortal },
   { key: "forumboard", label: "8. ForumBoard", Component: ForumBoard },
   { key: "eventpass", label: "9. EventPass", Component: EventPass },
+  { key: "skycontrol", label: "10. SkyControl", Component: SkyControl },
 ];
 
 function App() {

@@ -13,9 +13,15 @@ which guide to open, and how to **check** it works before moving on.
 | `BACKEND-3-ZOD.md` | `src/schemas.ts` | 7 |
 | `BACKEND-4-ROUTES.md` | `src/...Routes.ts` | 9 |
 | **Frontend** | | |
+| `FRONTEND-0-CONCEPTS.md` | the ideas: state, action, reducer, context, global dispatch | read before 12 |
 | `FRONTEND-1-TYPES.md` | `src/types/index.ts` | 12 |
 | `FRONTEND-2-CONTEXT.md` | `src/context/...Context.tsx` | 13 |
+| `FRONTEND-4-ACTIONS.md` | an action table -> Action line + case + dispatch | 12, 13, 15 |
+| `FRONTEND-5-REDUCER-RULES.md` | rules in the reducer (limits, if / else, alerts) | 13 |
 | `FRONTEND-3-SERVICE.md` | `src/api/...Service.ts` | 14 |
+
+Frontend-only paper (no backend, like the SkyControl prelim)? Skip steps 1-11 and 14,
+and follow `EXAM-1-HOW-TO-ANSWER.md` instead. The midterm plan is `EXAM-2-MIDTERM.md`.
 
 ---
 
@@ -189,6 +195,8 @@ Change: `State` and `Action` = **copy them exactly from the spec**, the item int
 Open: `FRONTEND-2-CONTEXT.md` (section 3 = action -> case recipes, section 5 = a different project)
 Copy: `pulsedesk/frontend/src/context/IncidentContext.tsx` -> rename it (`BookContext.tsx`)
 Change: `Incident` -> `Book`, `incidents` -> `books`, and **one `case` per action** in the spec's `Action`.
+The spec has an action table with rules ("must stay between", "if ... then")? Use `FRONTEND-4-ACTIONS.md`
+for each row and `FRONTEND-5-REDUCER-RULES.md` for each rule.
 
 ## Step 14 - the service
 

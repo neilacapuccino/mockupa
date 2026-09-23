@@ -68,10 +68,19 @@ Copy from `pulsedesk/` (paths below). Three kinds of files:
 | File | Where the new parts come from | Copy the shape from |
 |---|---|---|
 | `src/types/index.ts` | `State` + `Action` from the spec (copy them exactly) + one interface per item | `FRONTEND-1-TYPES.md` |
-| `src/context/...Context.tsx` | one `case` per action in the spec | `FRONTEND-2-CONTEXT.md` |
+| `src/context/...Context.tsx` | one `case` per action in the spec (rules: `FRONTEND-5-REDUCER-RULES.md`) | `FRONTEND-2-CONTEXT.md`, `FRONTEND-4-ACTIONS.md` |
 | `src/api/...Service.ts` | one function per endpoint in the spec table | `FRONTEND-3-SERVICE.md` |
 | `src/components/...Form.tsx` | the fields of the create body | `pulsedesk/frontend/src/components/IncidentForm.tsx` |
 | `src/components/...List.tsx` | what to show + update / delete buttons | `pulsedesk/frontend/src/components/IncidentList.tsx` |
+
+### Frontend-only paper (no backend, like the SkyControl prelim)
+| File | COPY AS-IS / REWRITE | Copy the shape from |
+|---|---|---|
+| the `createContext` + `Provider` part of the context file | COPY AS-IS (rename only) | `variations/10-skycontrol/frontend/src/context/FleetContext.tsx` |
+| the first 4 lines of every component (`useContext` + throw) | COPY AS-IS (rename only) | any file in `variations/10-skycontrol/frontend/src/components/` |
+| `App.tsx` | COPY + SMALL EDIT (the Provider + your component names) | `variations/10-skycontrol/frontend/src/App.tsx` |
+| types, `initialState`, the reducer cases | REWRITE from the paper | `FRONTEND-4-ACTIONS.md`, `FRONTEND-5-REDUCER-RULES.md` |
+| the components' buttons / tables | REWRITE from the component list | `EXAM-1-HOW-TO-ANSWER.md` step 6 |
 
 ---
 

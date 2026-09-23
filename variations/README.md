@@ -1,6 +1,6 @@
 # Exam variations (based on the PulseDesk sample)
 
-Nine practice exams. Read each `SPEC.md` first (that's the "exam question"),
+Ten practice exams. Read each `SPEC.md` first (that's the "exam question"),
 try to build it yourself, then compare with the code.
 New project from zero? → `../README.md`. Forgot a method or an error code? → `../CHEATSHEET.md`.
 
@@ -15,6 +15,10 @@ New project from zero? → `../README.md`. Forgot a method or an error code? →
 | 7 | **ClassPortal** | **2 account tables**, 2 login routes, `requireTeacher/requireStudent`, `CASE WHEN`, `AVG` | **student no. / employee no.** | 5007 |
 | 8 | **ForumBoard** | confirm password, **lockout (423)**, **`GET /me`** session restore, change password, public reads, author-only (403) | **username** | 5008 |
 | 9 | **EventPass** | **remember me**, **`optionalAuth`** (guests), **token expiry + auto-logout**, seat/past/duplicate rules | **mobile number** | 5009 |
+| 10 | **SkyControl** | **the real prelim paper**. **Frontend only** (no backend, no login): action table -> reducer, **clamps**, **auto-set fields**, **alerts added by rules**, selected item, filter | none | none |
+
+> 10 has no `backend/` folder. Its guides: `../FRONTEND-4-ACTIONS.md` (action table -> code) and
+> `../FRONTEND-5-REDUCER-RULES.md` (rules -> if/else).
 
 ## Folders
 Every variation is **complete on its own** — copy its `backend/` and `frontend/` into any
@@ -29,12 +33,13 @@ variations/
   2-libraryhub/ ...  (same shape)
   ...
   9-eventpass/ ...
+  10-skycontrol/       <- SPEC.md + frontend/ only
 
-  page/App.tsx         <- the page with 9 buttons (it just shows each frontend/src/App.tsx)
+  page/App.tsx         <- the page with 10 buttons (it just shows each frontend/src/App.tsx)
   package.json         <- the commands below
 ```
 
-## Run all 9 at the same time (from this folder)
+## Run all 10 at the same time (from this folder)
 ```powershell
 cd "C:\Users\Higurashi\OneDrive\Documents\task force\mockupa\variations"
 npm run dev

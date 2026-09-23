@@ -160,11 +160,20 @@ Open http://localhost:5173
 | more practice exams | `variations/` → read its `README.md` |
 | status codes, SQL, auth, React patterns | `CHEATSHEET.md` |
 
+**Exam guides (start here before an exam)**
+
+| Guide | For |
+|---|---|
+| `EXAM-1-HOW-TO-ANSWER.md` | a frontend "reducer" paper (the SkyControl prelim): time plan, order, errors, submit |
+| `EXAM-2-MIDTERM.md` | the midterm: database + dotenv -> Express, Zod, JWT, CRUD, React (PulseDesk type) |
+
 **Guides, in build order**
 
 | Backend | Frontend |
 |---|---|
+| | `FRONTEND-0-CONCEPTS.md` - state, action, reducer, context, global dispatch (the ideas) |
 | `BACKEND-1-SCHEMA.md` - `schema.sql` | `FRONTEND-1-TYPES.md` - `src/types/index.ts` |
 | `BACKEND-2-TYPES.md` - `src/types.ts` | `FRONTEND-2-CONTEXT.md` - `src/context/...Context.tsx` |
 | `BACKEND-3-ZOD.md` - `src/schemas.ts` (+ `BACKEND-3-ZOD-NOTES.md`) | `FRONTEND-3-SERVICE.md` - `src/api/...Service.ts` |
-| `BACKEND-4-ROUTES.md` - `src/...Routes.ts` | |
+| `BACKEND-4-ROUTES.md` - `src/...Routes.ts` | `FRONTEND-4-ACTIONS.md` - action table -> type + case + dispatch |
+| | `FRONTEND-5-REDUCER-RULES.md` - rules -> if / else, which code is affected |
