@@ -1,0 +1,14 @@
+{
+  "name": "variations",
+  "private": true,
+  "scripts": {
+    "setup": "npm i --prefix 1-studynotes/backend && npm i --prefix 2-libraryhub/backend && npm i --prefix 3-stockroom/backend && npm i --prefix frontend",
+    "db": "node setup-db.js",
+    "dev": "concurrently -n notes,library,stock,page -c blue,green,magenta,cyan \"npm run dev --prefix 1-studynotes/backend\" \"npm run dev --prefix 2-libraryhub/backend\" \"npm run dev --prefix 3-stockroom/backend\" \"npm run dev --prefix frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5",
+    "dotenv": "^18.0.3",
+    "pg": "^8.23.0"
+  }
+}

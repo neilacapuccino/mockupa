@@ -1,0 +1,2 @@
+// the StockRoom backend address
+export const API_URL = "http://localhost:5003/api";
