@@ -69,7 +69,7 @@ Copy from `pulsedesk/` (paths below). Three kinds of files:
 |---|---|---|
 | `src/types/index.ts` | `State` + `Action` from the spec (copy them exactly) + one interface per item | `pulsedesk/frontend/src/types/index.ts` |
 | `src/context/...Context.tsx` | one `case` per action in the spec | `pulsedesk/frontend/src/context/IncidentContext.tsx` |
-| `src/api/...Service.ts` | one function per endpoint in the spec table | `pulsedesk/frontend/src/api/incidentService.ts` |
+| `src/api/...Service.ts` | one function per endpoint in the spec table | `SERVICE-TEMPLATE.md` (how to translate) + `pulsedesk/frontend/src/api/incidentService.ts` |
 | `src/components/...Form.tsx` | the fields of the create body | `pulsedesk/frontend/src/components/IncidentForm.tsx` |
 | `src/components/...List.tsx` | what to show + update / delete buttons | `pulsedesk/frontend/src/components/IncidentList.tsx` |
 
