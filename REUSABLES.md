@@ -33,8 +33,8 @@ Copy from `pulsedesk/` (paths below). Three kinds of files:
 ### REWRITE (same shape, new fields)
 | File | Where the new fields come from | Template |
 |---|---|---|
-| `schema.sql` | the spec (what the app stores) | `README.md` section "schema.sql" |
-| `src/types.ts` | one interface per table, same columns as `schema.sql` | `pulsedesk/backend/src/types.ts` |
+| `schema.sql` | the spec (what the app stores) | `SCHEMA-TEMPLATE.md` |
+| `src/types.ts` | one interface per table, same columns as `schema.sql` | `TYPES-TEMPLATE.md` |
 | `src/schemas.ts` | the columns of `schema.sql` + the spec table | `ZOD-TEMPLATE.md` |
 | `src/incidentRoutes.ts` -> `yourRoutes.ts` | the spec table (methods, paths, middleware) | `CHEATSHEET.md` section 3 + `pulsedesk/backend/src/incidentRoutes.ts` |
 

@@ -10,7 +10,7 @@ mkdir src/types/express
 
 ni src/index.ts, src/db.ts, src/types.ts, src/schemas.ts, src/validate.ts, src/authMiddleware.ts, src/authRoutes.ts, src/incidentRoutes.ts, src/types/express/index.d.ts, .env, schema.sql
 
-& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -c "CREATE DATABASE pulsedesk;"
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -c "CREATE DATABASE pulsedesk;" <-change name
 & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d pulsedesk -f ".\schema.sql"
 & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d pulsedesk -c "\dt"
 
@@ -18,6 +18,11 @@ dotenv
 schemasql
 db.ts
 types
+schema ts
+validate
+auth route
+jwt middlewaare
+inc
 
 ---
 
