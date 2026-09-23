@@ -14,7 +14,8 @@ export const authBodySchema = z.object({
     .min(6, "Password must be at least 6 characters"),
 });
 
-export const authRequestSchema = z.object({
+// "Zod Login" in the spec table -> POST /api/auth/login
+export const loginSchema = z.object({
   body: authBodySchema,
 });
 
@@ -34,10 +35,16 @@ export const createIncidentSchema = z.object({
   body: incidentBodySchema,
 });
 
+// PATCH /api/incidents/:id -> spec: "UPDATE Status/Severity" -> ONLY these 2 fields
 export const updateIncidentSchema = z.object({
-  body: incidentBodySchema.partial(),
+  body: z.object({
+    status: z.enum(["open", "in_progress", "resolved"]).optional(),
+    severity: z.enum(["low", "medium", "high", "critical"]).optional(),
+  }),
 
   params: z.object({
+    // UUID because schema.sql uses UUID ids
+    // (with SERIAL ids it would be: z.string().regex(/^\d+$/, "ID must be a number"))
     id: z.uuid("ID must be a valid id"),
   }),
 });

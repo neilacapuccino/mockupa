@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import { pool } from "./db";
 import jwt from "jsonwebtoken";
 import { validateResource } from "./validate";      // STEP 4
-import { authRequestSchema } from "./schemas";      // STEP 4
+import { loginSchema } from "./schemas";            // STEP 4
 
 const router = Router();
 
@@ -26,7 +26,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "fallback_secret";
 
 router.post(
   "/login",
-  validateResource(authRequestSchema),   // STEP 4: added after making validate.ts + schemas.ts
+  validateResource(loginSchema),   // STEP 4: added after making validate.ts + schemas.ts
   async (req, res) => {
     const { email, password } = req.body;
 
