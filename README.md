@@ -1,5 +1,8 @@
 # Start a full-stack project from zero
 
+## Backend (terminal 1)
+
+```powershell
 mkdir pulsedesk; cd pulsedesk; mkdir backend; cd backend
 npm init -y
 npm i express pg dotenv zod jsonwebtoken bcryptjs cors
@@ -9,20 +12,96 @@ npx tsc --init --module commonjs --types node --verbatimModuleSyntax false --exa
 mkdir src/types/express
 
 ni src/index.ts, src/db.ts, src/types.ts, src/schemas.ts, src/validate.ts, src/authMiddleware.ts, src/authRoutes.ts, src/incidentRoutes.ts, src/types/express/index.d.ts, .env, schema.sql
+```
 
-& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -c "CREATE DATABASE pulsedesk;" <-change name
+Database (from the `backend` folder):
+
+```powershell
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -c "CREATE DATABASE pulsedesk;"   # <-change name
 & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d pulsedesk -f ".\schema.sql"
 & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d pulsedesk -c "\dt"
+```
 
-dotenv
-schemasql
-db.ts
-types
-schema ts
-validate
-auth route
-jwt middlewaare
-inc
+More database commands (paste the `$PSQL` line first, then any line you need):
+
+```powershell
+$PSQL = "C:\Program Files\PostgreSQL\18\bin\psql.exe"
+
+& $PSQL -U postgres -c "\l"                                              # list all databases
+& $PSQL -U postgres -d pulsedesk -c "\dt"                                # list the tables
+& $PSQL -U postgres -d pulsedesk -c "\d incidents"                       # the columns of one table
+& $PSQL -U postgres -d pulsedesk -c "SELECT * FROM incidents;"           # all the rows
+& $PSQL -U postgres -d pulsedesk -c "SELECT id, email FROM users;"       # the users
+& $PSQL -U postgres -d pulsedesk -c "SELECT COUNT(*) FROM incidents;"    # how many rows
+& $PSQL -U postgres -d pulsedesk -f ".\schema.sql"                       # reset: wipe everything + fresh test data
+```
+
+| Command | What it shows / does |
+|---|---|
+| `\l` | every database on your Postgres |
+| `\dt` | the tables in one database |
+| `\d incidents` | the columns of `incidents` (type, NOT NULL, DEFAULT, CHECK) |
+| `SELECT * FROM incidents;` | all the rows |
+| `-f ".\schema.sql"` | runs the file again = **all data wiped** + test data back |
+
+Tired of typing the password every time? Paste this once per terminal:
+
+```powershell
+$env:PGPASSWORD = "your_postgres_password"
+```
+
+Or open psql and type commands inside it:
+
+```powershell
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d pulsedesk
+```
+
+Inside psql: `\dt` (tables), `\d incidents` (columns), `SELECT * FROM incidents;` (rows - don't forget the `;`), `\q` (quit).
+
+Delete a whole database (careful - everything in it is gone):
+
+```powershell
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -c "DROP DATABASE pulsedesk;"
+```
+
+Backend files, in this order:
+
+1. dotenv
+2. schemasql
+3. db.ts
+4. types
+5. schema ts
+6. validate
+7. auth route
+8. jwt middlewaare
+9. inc
+
+## Frontend (terminal 2)
+
+Open a second terminal in the project folder (the one with `backend` inside), then:
+
+```powershell
+npx -y create-vite@latest frontend --template react-ts --no-interactive
+cd frontend
+npm i
+npm i styled-components
+mkdir src/types, src/context, src/api, src/components
+
+ni src/types/index.ts, src/context/IncidentContext.tsx, src/api/config.ts, src/api/authService.ts, src/api/incidentService.ts, src/components/styles.ts, src/components/AuthForm.tsx, src/components/IncidentForm.tsx, src/components/IncidentList.tsx
+Clear-Content src/App.css, src/index.css
+npm run dev
+```
+
+Frontend files, in this order:
+
+1. types (`src/types/index.ts`)
+2. context (`src/context/IncidentContext.tsx`)
+3. config (`src/api/config.ts`)
+4. authService + AuthForm
+5. incidentService
+6. IncidentList
+7. IncidentForm
+8. App.tsx
 
 ---
 
@@ -74,6 +153,7 @@ Open http://localhost:5173
 ## Where to find things
 | I need... | Look at |
 |---|---|
+| install + configure backend and frontend (copy-paste blocks) | `INSTALL.md` |
 | the order to build a new project | `ORDER.md` |
 | which files to copy as-is | `REUSABLES.md` |
 | a finished example | `pulsedesk/` (the exam sample) |

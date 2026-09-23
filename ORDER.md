@@ -5,7 +5,7 @@ which guide to open, and how to **check** it works before moving on.
 
 | Guide | For | Used in step |
 |---|---|---|
-| `README.md` | the install commands | 1, 10 |
+| `INSTALL.md` | install + config (copy-paste blocks) | 1-4, 10 |
 | `REUSABLES.md` | which files are copy-as-is | 4, 11 |
 | **Backend** | | |
 | `BACKEND-1-SCHEMA.md` | `schema.sql` | 3 |
@@ -39,12 +39,15 @@ Write these down on paper:
 
 ## Step 1 - Install (terminal 1)
 
-Open: `README.md` (the commands at the top).
-Change: the folder name (`mkdir myproject`).
+Open: `INSTALL.md` - Blocks 1-3 also write `.env`, `.gitignore` and the step 4 files for you.
+Change: the 3 names in Block 1.
 
 Check: `package.json` has the packages, `src/` has the empty files.
 
 ## Step 2 - `.env`
+
+**Used `INSTALL.md`? Already done by Block 3 - skip.**
+
 
 Copy: `pulsedesk/backend/.env`
 Change: `PGDATABASE` (new name). `PORT` only if 5000 is busy.
@@ -65,6 +68,9 @@ Check: `\dt` lists your tables.
 
 ## Step 4 - Copy the files that never change
 
+**Used `INSTALL.md`? Already done by Block 3 - skip.**
+
+
 Copy (no changes): `db.ts`, `validate.ts`, `authMiddleware.ts`, `types/express/index.d.ts`, `.gitignore`.
 Run this from your new `backend/` folder:
 
@@ -76,6 +82,9 @@ Copy-Item "$P\.gitignore" -Destination .\
 ```
 
 ## Step 5 - `index.ts`
+
+**Used `INSTALL.md`? Already written by Block 3 - just rename `itemRoutes` / `/api/items` later.**
+
 
 Copy: `pulsedesk/backend/src/index.ts`
 Change: `incidentRoutes` -> your routes name, `"/api/incidents"` -> your path.
@@ -101,6 +110,9 @@ Change:
 - the names = what the spec's Middleware column says (`createXSchema`, `updateXSchema`)
 
 ## Step 8 - `authRoutes.ts` (login)
+
+**Used `INSTALL.md`? Already written by Block 3 - only change it if the login is not email.**
+
 
 Copy: `pulsedesk/backend/src/authRoutes.ts`
 Change: only if the login is not email -> `email` becomes `username` / `student_no` / ... in 3 places
@@ -138,6 +150,9 @@ Invoke-RestMethod -Method Post -Uri http://localhost:5000/api/books -Headers $h 
 # FRONTEND
 
 ## Step 10 - Install (terminal 2, from the project folder)
+
+**Or use `INSTALL.md` Block 5 (it also writes `config.ts` and the empty files).**
+
 
 ```powershell
 npx -y create-vite@latest frontend --template react-ts --no-interactive
