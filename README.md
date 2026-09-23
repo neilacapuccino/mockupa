@@ -166,6 +166,7 @@ Open http://localhost:5173
 |---|---|
 | `EXAM-1-HOW-TO-ANSWER.md` | a frontend "reducer" paper (the SkyControl prelim): time plan, order, errors, submit |
 | `EXAM-2-MIDTERM.md` | the midterm: database + dotenv -> Express, Zod, JWT, CRUD, React (PulseDesk type) |
+| `EXAM-3-SPEC-TRANSLATION.md` | a spec (overview + API table + State/Action) -> `schema.sql`, interfaces, Zod schemas, types |
 
 **Guides, in build order**
 

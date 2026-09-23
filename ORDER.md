@@ -22,6 +22,8 @@ which guide to open, and how to **check** it works before moving on.
 
 Frontend-only paper (no backend, like the SkyControl prelim)? Skip steps 1-11 and 14,
 and follow `EXAM-1-HOW-TO-ANSWER.md` instead. The midterm plan is `EXAM-2-MIDTERM.md`.
+Step 0 (reading the spec) in more detail, with the field list that feeds steps 3, 6, 7 and 12:
+`EXAM-3-SPEC-TRANSLATION.md`.
 
 ---
 
