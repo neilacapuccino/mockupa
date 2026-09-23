@@ -3,15 +3,19 @@
 Follow the steps top to bottom. Each step says what to **copy**, what to **change**,
 which guide to open, and how to **check** it works before moving on.
 
-| Guide | For |
-|---|---|
-| `README.md` | the install commands |
-| `REUSABLES.md` | which files are copy-as-is |
-| `SCHEMA-TEMPLATE.md` | `schema.sql` |
-| `TYPES-TEMPLATE.md` | `types.ts` |
-| `ZOD-TEMPLATE.md` | `schemas.ts` |
-| `ROUTES-TEMPLATE.md` | the routes file |
-| `SERVICE-TEMPLATE.md` | the frontend services |
+| Guide | For | Used in step |
+|---|---|---|
+| `README.md` | the install commands | 1, 10 |
+| `REUSABLES.md` | which files are copy-as-is | 4, 11 |
+| **Backend** | | |
+| `BACKEND-1-SCHEMA.md` | `schema.sql` | 3 |
+| `BACKEND-2-TYPES.md` | `src/types.ts` | 6 |
+| `BACKEND-3-ZOD.md` | `src/schemas.ts` | 7 |
+| `BACKEND-4-ROUTES.md` | `src/...Routes.ts` | 9 |
+| **Frontend** | | |
+| `FRONTEND-1-TYPES.md` | `src/types/index.ts` | 12 |
+| `FRONTEND-2-CONTEXT.md` | `src/context/...Context.tsx` | 13 |
+| `FRONTEND-3-SERVICE.md` | `src/api/...Service.ts` | 14 |
 
 ---
 
@@ -47,7 +51,7 @@ Change: `PGDATABASE` (new name). `PORT` only if 5000 is busy.
 
 ## Step 3 - `schema.sql` + create the database
 
-Open: `SCHEMA-TEMPLATE.md` (section 6 = PulseDesk, section 7 = a different project).
+Open: `BACKEND-1-SCHEMA.md` (section 6 = PulseDesk, section 7 = a different project).
 Copy: `pulsedesk/backend/schema.sql`
 Change: the main table name + its columns + the CHECK values + the test rows.
 
@@ -81,13 +85,13 @@ Check: `npm run dev` -> open http://localhost:5000 -> "hello from server".
 
 ## Step 6 - `types.ts`
 
-Open: `TYPES-TEMPLATE.md`
+Open: `BACKEND-2-TYPES.md`
 Copy: `pulsedesk/backend/src/types.ts`
 Change: `Incident` -> your table (singular), the fields = your columns.
 
 ## Step 7 - `schemas.ts`
 
-Open: `ZOD-TEMPLATE.md` (section 2 = translate a table, section 9 = PulseDesk)
+Open: `BACKEND-3-ZOD.md` (section 2 = translate a table, section 9 = PulseDesk)
 Copy: `pulsedesk/backend/src/schemas.ts`
 Change:
 - the login field (only if it's not email)
@@ -112,7 +116,7 @@ You should see a `token`.
 
 ## Step 9 - the routes file
 
-Open: `ROUTES-TEMPLATE.md` (section 4 = spec table -> route, section 5 = PulseDesk)
+Open: `BACKEND-4-ROUTES.md` (section 4 = spec table -> route, section 5 = PulseDesk)
 Copy: `pulsedesk/backend/src/incidentRoutes.ts` -> rename it (`bookRoutes.ts`)
 Change, **one spec row at a time**:
 - the table name in the SQL
@@ -160,19 +164,20 @@ Change: `config.ts` -> the port (only if not 5000).
 
 ## Step 12 - `types/index.ts`
 
-Open: `TYPES-TEMPLATE.md` section 8
+Open: `FRONTEND-1-TYPES.md` (section 5 = PulseDesk, section 6 = a different project)
 Copy: `pulsedesk/frontend/src/types/index.ts`
 Change: `State` and `Action` = **copy them exactly from the spec**, the item interface = your fields
 (`id: string`, no `?` on fields the server always fills), the dropdown lists = your CHECK values.
 
 ## Step 13 - the context
 
+Open: `FRONTEND-2-CONTEXT.md` (section 3 = action -> case recipes, section 5 = a different project)
 Copy: `pulsedesk/frontend/src/context/IncidentContext.tsx` -> rename it (`BookContext.tsx`)
 Change: `Incident` -> `Book`, `incidents` -> `books`, and **one `case` per action** in the spec's `Action`.
 
 ## Step 14 - the service
 
-Open: `SERVICE-TEMPLATE.md` (section 5 = PulseDesk -> a different project)
+Open: `FRONTEND-3-SERVICE.md` (section 5 = PulseDesk -> a different project)
 Copy: `pulsedesk/frontend/src/api/incidentService.ts` -> rename it (`bookService.ts`)
 Change: the URLs, the function names, the types, and the fields of each body = your Zod schemas.
 Add a function for any extra row in the spec table.
@@ -211,7 +216,7 @@ Then fix by hand only the **fields** (title/description/severity/status -> your 
 
 | Check | Where |
 |---|---|
-| Every spec row has a route with the same method, path, protection and middleware | `ROUTES-TEMPLATE.md` section 4 |
+| Every spec row has a route with the same method, path, protection and middleware | `BACKEND-4-ROUTES.md` section 4 |
 | Column names are the same in `schema.sql`, `types.ts`, `schemas.ts`, the SQL in the routes, and the frontend body | all files |
 | The CHECK values = the Zod enums = the frontend dropdown options | `schema.sql`, `schemas.ts`, `types/index.ts` |
 | `State` and `Action` are copied exactly from the spec | `frontend/src/types/index.ts` |

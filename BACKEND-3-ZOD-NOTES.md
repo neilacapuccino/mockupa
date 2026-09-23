@@ -1,4 +1,4 @@
-# Zod (short)
+# Backend 3 - Zod notes
 
 ## 🗺️ The 4 parts of a request
 

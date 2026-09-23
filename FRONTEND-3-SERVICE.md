@@ -1,8 +1,8 @@
-# Service template - `src/api/...Service.ts` for any project
+# Frontend 3 - `src/api/...Service.ts`
 
 A service = **one function per endpoint** in the spec table.
 Components never call `fetch` themselves - they call a service function.
-Routes (backend side) -> `ROUTES-TEMPLATE.md`. Zod -> `ZOD-TEMPLATE.md`.
+Routes (backend side) -> `BACKEND-4-ROUTES.md`. Zod -> `BACKEND-3-ZOD.md`.
 
 **Part 1 - The general approach**
 1. The shape of every service function

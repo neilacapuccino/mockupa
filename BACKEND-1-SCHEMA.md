@@ -1,8 +1,8 @@
-# Schema template - `schema.sql` for any project
+# Backend 1 - `schema.sql`
 
 `schema.sql` = the tables your app stores. Write it **first** - `types.ts`, the Zod schemas
 and the routes all copy their field names from it.
-Next steps -> `TYPES-TEMPLATE.md`, `ZOD-TEMPLATE.md`, `ROUTES-TEMPLATE.md`.
+Next steps -> `BACKEND-2-TYPES.md`, `BACKEND-3-ZOD.md`, `BACKEND-4-ROUTES.md`.
 
 **Part 1 - The general approach**
 1. The shape of every schema.sql

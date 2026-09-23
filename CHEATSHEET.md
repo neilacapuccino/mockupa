@@ -1,6 +1,6 @@
 # Cheat sheet (short)
 
-Zod → see `ZOD.md`. Full working code → `pulsedesk/` and `variations/`.
+Zod → see `BACKEND-3-ZOD-NOTES.md`. Full working code → `pulsedesk/` and `variations/`.
 
 ---
 

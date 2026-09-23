@@ -1,7 +1,7 @@
-# Types template - `types.ts` for any project
+# Backend 2 - `src/types.ts`
 
 `types.ts` = one TypeScript **interface per table**, with the same names as the columns in `schema.sql`.
-Write it right after `schema.sql` (-> `SCHEMA-TEMPLATE.md`).
+Write it right after `schema.sql` (-> `BACKEND-1-SCHEMA.md`).
 
 **Part 1 - The general approach**
 1. The shape of every types.ts
@@ -244,6 +244,7 @@ const incident = result.rows[0];   // Incident | undefined
 ## 8. Frontend `types/index.ts` - what's different
 
 The frontend gets **rows back from the server**, so every row HAS an id and its defaults are filled in.
+Full guide for the frontend file -> `FRONTEND-1-TYPES.md`.
 
 | | Backend `types.ts` | Frontend `types/index.ts` |
 |---|---|---|

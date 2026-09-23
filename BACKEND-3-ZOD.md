@@ -1,4 +1,4 @@
-# Zod template - `schemas.ts` for any project
+# Backend 3 - `src/schemas.ts` (Zod)
 
 `validate.ts` never changes.
 `schemas.ts` has the same shape in every project - only the fields change.

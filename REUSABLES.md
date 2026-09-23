@@ -20,7 +20,7 @@ Copy from `pulsedesk/` (paths below). Three kinds of files:
 | `src/types/express/index.d.ts` | lets you use `req.user` |
 | `src/db.ts` | the `pg` Pool, reads `.env` |
 | `tsconfig.json` | made by the `npx tsc --init ...` command |
-| `.gitignore` | `node_modules`, `.env`, `dist` |
+| `.gitignore` | `node_modules`, `dist` (`.env` is kept so the project works when cloned) |
 
 ### COPY + SMALL EDIT
 | File | Change only |
@@ -33,10 +33,10 @@ Copy from `pulsedesk/` (paths below). Three kinds of files:
 ### REWRITE (same shape, new fields)
 | File | Where the new fields come from | Template |
 |---|---|---|
-| `schema.sql` | the spec (what the app stores) | `SCHEMA-TEMPLATE.md` |
-| `src/types.ts` | one interface per table, same columns as `schema.sql` | `TYPES-TEMPLATE.md` |
-| `src/schemas.ts` | the columns of `schema.sql` + the spec table | `ZOD-TEMPLATE.md` |
-| `src/incidentRoutes.ts` -> `yourRoutes.ts` | the spec table (methods, paths, middleware) | `CHEATSHEET.md` section 3 + `pulsedesk/backend/src/incidentRoutes.ts` |
+| `schema.sql` | the spec (what the app stores) | `BACKEND-1-SCHEMA.md` |
+| `src/types.ts` | one interface per table, same columns as `schema.sql` | `BACKEND-2-TYPES.md` |
+| `src/schemas.ts` | the columns of `schema.sql` + the spec table | `BACKEND-3-ZOD.md` |
+| `src/incidentRoutes.ts` -> `yourRoutes.ts` | the spec table (methods, paths, middleware) | `BACKEND-4-ROUTES.md` |
 
 ### Extra middlewares (copy only when the spec needs them)
 | Spec says | Copy from |
@@ -67,9 +67,9 @@ Copy from `pulsedesk/` (paths below). Three kinds of files:
 ### REWRITE (same shape, new fields)
 | File | Where the new parts come from | Copy the shape from |
 |---|---|---|
-| `src/types/index.ts` | `State` + `Action` from the spec (copy them exactly) + one interface per item | `pulsedesk/frontend/src/types/index.ts` |
-| `src/context/...Context.tsx` | one `case` per action in the spec | `pulsedesk/frontend/src/context/IncidentContext.tsx` |
-| `src/api/...Service.ts` | one function per endpoint in the spec table | `SERVICE-TEMPLATE.md` (how to translate) + `pulsedesk/frontend/src/api/incidentService.ts` |
+| `src/types/index.ts` | `State` + `Action` from the spec (copy them exactly) + one interface per item | `FRONTEND-1-TYPES.md` |
+| `src/context/...Context.tsx` | one `case` per action in the spec | `FRONTEND-2-CONTEXT.md` |
+| `src/api/...Service.ts` | one function per endpoint in the spec table | `FRONTEND-3-SERVICE.md` |
 | `src/components/...Form.tsx` | the fields of the create body | `pulsedesk/frontend/src/components/IncidentForm.tsx` |
 | `src/components/...List.tsx` | what to show + update / delete buttons | `pulsedesk/frontend/src/components/IncidentList.tsx` |
 

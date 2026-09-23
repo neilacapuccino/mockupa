@@ -74,7 +74,17 @@ Open http://localhost:5173
 ## Where to find things
 | I need... | Look at |
 |---|---|
+| the order to build a new project | `ORDER.md` |
+| which files to copy as-is | `REUSABLES.md` |
 | a finished example | `pulsedesk/` (the exam sample) |
 | more practice exams | `variations/` → read its `README.md` |
 | status codes, SQL, auth, React patterns | `CHEATSHEET.md` |
-| Zod rules with examples | `ZOD.md` |
+
+**Guides, in build order**
+
+| Backend | Frontend |
+|---|---|
+| `BACKEND-1-SCHEMA.md` - `schema.sql` | `FRONTEND-1-TYPES.md` - `src/types/index.ts` |
+| `BACKEND-2-TYPES.md` - `src/types.ts` | `FRONTEND-2-CONTEXT.md` - `src/context/...Context.tsx` |
+| `BACKEND-3-ZOD.md` - `src/schemas.ts` (+ `BACKEND-3-ZOD-NOTES.md`) | `FRONTEND-3-SERVICE.md` - `src/api/...Service.ts` |
+| `BACKEND-4-ROUTES.md` - `src/...Routes.ts` | |

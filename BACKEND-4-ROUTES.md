@@ -1,7 +1,7 @@
-# Routes template - `yourRoutes.ts` for any project
+# Backend 4 - `src/...Routes.ts`
 
 Every route has the same 4 steps. Only the SQL, the fields and the middleware change.
-Zod schemas for these routes -> `ZOD-TEMPLATE.md`.
+Zod schemas for these routes -> `BACKEND-3-ZOD.md`.
 
 **Part 1 - The general approach**
 1. The shape of every route
