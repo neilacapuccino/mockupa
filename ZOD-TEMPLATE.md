@@ -3,19 +3,34 @@
 `validate.ts` never changes.
 `schemas.ts` has the same shape in every project - only the fields change.
 
-Every block below is a **complete `schemas.ts` file**. Pick the one closest to your
-exam, copy all of it, then edit the lines marked `// CHANGE`.
+Start with Part 1, learn the CRUD pattern in Part 2, then copy the full example
+closest to your exam from Part 3 and edit the lines marked `// CHANGE`.
 
+**Part 1 - Start**
 1. Template (start here)
 2. Translate a table: schema.sql -> every schema (step by step)
-3. Full example: PulseDesk
-4. Full example: SERIAL (number) ids
-5. Full example: username login + register
-6. Full example: query, params only, nested route, list in the body
-7. Tables: schema.sql column -> Zod, spec Description -> update schema, login fields
-8. Final check
+
+**Part 2 - CRUD with Zod**
+3. CRUD at a glance
+4. Create (POST)
+5. Read (GET all / GET one)
+6. Update (PATCH / PUT)
+7. Delete (DELETE)
+8. All together (full files)
+
+**Part 3 - Full examples**
+9. PulseDesk
+10. SERIAL (number) ids
+11. Username login + register
+12. Query, params only, nested route, list in the body
+
+**Part 4 - Reference**
+13. Tables: schema.sql column -> Zod, spec Description -> update schema, login fields
+14. Final check
 
 ---
+
+# Part 1 - Start
 
 ## 1. Template (start here)
 
@@ -71,7 +86,7 @@ export const createItemSchema = z.object({
 // PATCH /api/items/:id
 export const updateItemSchema = z.object({
   // CHANGE: .partial() = any field can change
-  // if the spec says "UPDATE x/y", list only x and y (see section 3)
+  // if the spec says "UPDATE x/y", list only x and y (see section 9)
   body: itemBodySchema.partial(),
 
   params: z.object({
@@ -366,7 +381,454 @@ await pool.query(
 
 ---
 
-## 3. Full example: PulseDesk
+# Part 2 - CRUD with Zod
+
+Same `books` table as section 2. Each CRUD operation checks a different part of the request.
+
+## 3. CRUD at a glance
+
+| CRUD | Method + path | Schema | What Zod checks |
+|---|---|---|---|
+| Create | `POST /api/books` | `createBookSchema` | body |
+| Read all | `GET /api/books?genre=science` | `bookQuerySchema` | query (or no schema at all) |
+| Read one | `GET /api/books/:id` | `bookIdSchema` | params |
+| Update some fields | `PATCH /api/books/:id` | `updateBookSchema` | params + body (all optional) |
+| Replace everything | `PUT /api/books/:id` | `replaceBookSchema` | params + body (all required) |
+| Delete | `DELETE /api/books/:id` | `bookIdSchema` | params |
+
+What Zod does NOT check (the route does it):
+
+| Situation | Who answers | Status |
+|---|---|---|
+| wrong type / missing field / bad id format | Zod (`validateResource`) | 400 |
+| the id is valid but no row has it | the route (`result.rows.length === 0`) | 404 |
+| PATCH with `{}` | the route ("No fields provided") | 400 |
+| duplicate value (UNIQUE) | the route (`error.code === "23505"`) | 409 |
+
+---
+
+## 4. Create (POST)
+
+Zod checks the **body**.
+
+```ts
+export const createBookSchema = z.object({
+  body: bookBodySchema,
+});
+```
+
+```ts
+router.post("/", authenticateToken, validateResource(createBookSchema), async (req, res) => { ... });
+```
+
+Passes -> **201**
+
+```http
+POST /api/books
+Content-Type: application/json
+Authorization: Bearer <token>
+
+{ "title": "Refactoring", "author": "Martin Fowler", "published_year": 2018 }
+```
+
+Fails -> **400**
+
+| Body sent | Message |
+|---|---|
+| `{ "author": "Martin Fowler", "published_year": 2018 }` | `body.title` Invalid input: expected string, received undefined |
+| `{ "title": "", ... }` | `body.title` title is required |
+| `{ ..., "published_year": "2018" }` | `body.published_year` Invalid input: expected number, received string |
+| `{ ..., "genre": "poetry" }` | `body.genre` Invalid option: expected one of "fiction"\|"science"\|"history" |
+
+---
+
+## 5. Read (GET)
+
+### Read all - Zod checks the **query** (filters)
+
+```ts
+export const bookQuerySchema = z.object({
+  query: z.object({
+    search: z.string().optional(),
+    genre: z.enum(["fiction", "science", "history"]).optional(),
+    available: z.enum(["true", "false"]).optional(),
+  }),
+});
+```
+
+```ts
+router.get("/", authenticateToken, validateResource(bookQuerySchema), async (req, res) => { ... });
+```
+
+No filters in the spec? Then no schema: `router.get("/", authenticateToken, async ...)`.
+
+| Request | Result |
+|---|---|
+| `GET /api/books` | 200, every book |
+| `GET /api/books?genre=science&available=true` | 200, only available science books |
+| `GET /api/books?genre=poetry` | 400, `query.genre` Invalid option: expected one of ... |
+| `GET /api/books?available=yes` | 400, `query.available` Invalid option: expected one of "true"\|"false" |
+
+### Read one - Zod checks the **params** (the id)
+
+```ts
+export const bookIdSchema = z.object({
+  params: z.object({ id: z.uuid("ID must be a valid id") }),
+});
+```
+
+```ts
+router.get("/:id", authenticateToken, validateResource(bookIdSchema), async (req, res) => { ... });
+```
+
+| Request | Result |
+|---|---|
+| `GET /api/books/3cf1bffc-7dc2-407a-81ec-733ddd6e4821` | 200, the book |
+| `GET /api/books/abc` | 400, `params.id` ID must be a valid id (Zod) |
+| a valid id that doesn't exist | 404, Book not found (the route) |
+
+---
+
+## 6. Update (PATCH / PUT)
+
+Zod checks the **params** (id) AND the **body**.
+
+### PATCH - change some fields
+
+```ts
+export const updateBookSchema = z.object({
+  body: bookBodySchema.partial(),
+  params: z.object({ id: z.uuid("ID must be a valid id") }),
+});
+```
+
+```ts
+router.patch("/:id", authenticateToken, validateResource(updateBookSchema), async (req, res) => { ... });
+```
+
+| Body sent | Result |
+|---|---|
+| `{ "is_available": false }` | 200, only that field changes |
+| `{ "published_year": 2019, "genre": "science" }` | 200, both change |
+| `{ "is_available": "no" }` | 400, `body.is_available` Invalid input: expected boolean, received string |
+| `{}` | passes Zod -> the route sends 400 "No fields provided for update" |
+
+### PUT - replace everything
+
+```ts
+export const replaceBookSchema = z.object({
+  body: bookBodySchema,
+  params: z.object({ id: z.uuid("ID must be a valid id") }),
+});
+```
+
+```ts
+router.put("/:id", authenticateToken, validateResource(replaceBookSchema), async (req, res) => { ... });
+```
+
+| Body sent | Result |
+|---|---|
+| all of `title`, `author`, `published_year` (+ optional `genre`, `is_available`) | 200 |
+| `{ "title": "Refactoring 2" }` only | 400, `body.author` ... `body.published_year` ... received undefined |
+
+Spec says "UPDATE x/y" only? Use a body with just those fields - section 2, step 5 B.
+
+---
+
+## 7. Delete (DELETE)
+
+Zod checks the **params** only - same `bookIdSchema` as Read one.
+
+```ts
+router.delete("/:id", authenticateToken, validateResource(bookIdSchema), async (req, res) => { ... });
+```
+
+| Request | Result |
+|---|---|
+| `DELETE /api/books/3cf1bffc-7dc2-407a-81ec-733ddd6e4821` | 200, the deleted book |
+| `DELETE /api/books/abc` | 400, `params.id` ID must be a valid id |
+| the same id again | 404, Book not found |
+
+The spec says Middleware "None" for DELETE? Then leave `validateResource(bookIdSchema)` out -
+a bad id then reaches Postgres and becomes a 500 instead of a 400.
+
+---
+
+## 8. All together (full files)
+
+Three complete files for the books API.
+
+```ts
+// src/types.ts
+export interface Book {
+  id?: string;
+  title: string;
+  author: string;
+  published_year: number;
+  genre?: string;
+  is_available?: boolean;
+  created_at?: string;
+}
+```
+
+```ts
+// src/schemas.ts
+import { z } from "zod";
+
+
+// ========================================
+// BOOKS
+// ========================================
+
+export const bookBodySchema = z.object({
+  title: z.string().min(1, "title is required").max(150, "title is too long"),
+  author: z.string().min(1, "author is required").max(100, "author is too long"),
+  published_year: z.number().int("year must be a whole number").min(1450).max(2100),
+  genre: z.enum(["fiction", "science", "history"]).default("fiction"),
+  is_available: z.boolean().default(true),
+});
+
+// READ all:  GET /api/books?search=&genre=&available=
+export const bookQuerySchema = z.object({
+  query: z.object({
+    search: z.string().optional(),
+    genre: z.enum(["fiction", "science", "history"]).optional(),
+    available: z.enum(["true", "false"]).optional(),
+  }),
+});
+
+// READ one / DELETE:  /api/books/:id
+export const bookIdSchema = z.object({
+  params: z.object({ id: z.uuid("ID must be a valid id") }),
+});
+
+// CREATE:  POST /api/books
+export const createBookSchema = z.object({
+  body: bookBodySchema,
+});
+
+// UPDATE:  PATCH /api/books/:id
+export const updateBookSchema = z.object({
+  body: bookBodySchema.partial(),
+  params: z.object({ id: z.uuid("ID must be a valid id") }),
+});
+
+// REPLACE:  PUT /api/books/:id
+export const replaceBookSchema = z.object({
+  body: bookBodySchema,
+  params: z.object({ id: z.uuid("ID must be a valid id") }),
+});
+```
+
+```ts
+// src/bookRoutes.ts
+import { Router } from "express";
+import { pool } from "./db";
+import { Book } from "./types";
+import { validateResource } from "./validate";
+import {
+  bookQuerySchema,
+  bookIdSchema,
+  createBookSchema,
+  updateBookSchema,
+  replaceBookSchema,
+} from "./schemas";
+import { authenticateToken } from "./authMiddleware";
+
+const router = Router();
+
+
+// ========================================
+// READ ALL - GET /api/books?search=&genre=&available=
+// ========================================
+
+router.get("/", authenticateToken, validateResource(bookQuerySchema), async (req, res) => {
+  const { search, genre, available } = req.query;
+
+  try {
+    const conditions: string[] = [];
+    const values: (string | boolean)[] = [];
+
+    if (typeof search === "string" && search !== "") {
+      values.push(`%${search}%`);
+      conditions.push(`title ILIKE $${values.length}`);
+    }
+
+    if (typeof genre === "string") {
+      values.push(genre);
+      conditions.push(`genre = $${values.length}`);
+    }
+
+    if (available === "true" || available === "false") {
+      values.push(available === "true");
+      conditions.push(`is_available = $${values.length}`);
+    }
+
+    const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+
+    const result = await pool.query(`SELECT * FROM books ${where} ORDER BY title ASC`, values);
+
+    res.json(result.rows);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+
+// ========================================
+// READ ONE - GET /api/books/:id
+// ========================================
+
+router.get("/:id", authenticateToken, validateResource(bookIdSchema), async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query(`SELECT * FROM books WHERE id = $1`, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Book not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+
+// ========================================
+// CREATE - POST /api/books
+// ========================================
+
+router.post("/", authenticateToken, validateResource(createBookSchema), async (req, res) => {
+  const { title, author, published_year, genre, is_available }: Book = req.body;
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO books (title, author, published_year, genre, is_available)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [title, author, published_year, genre ?? "fiction", is_available ?? true]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+
+// ========================================
+// UPDATE SOME FIELDS - PATCH /api/books/:id
+// ========================================
+
+router.patch("/:id", authenticateToken, validateResource(updateBookSchema), async (req, res) => {
+  const { id } = req.params;
+  const { title, author, published_year, genre, is_available }: Book = req.body;
+
+  if (
+    title === undefined &&
+    author === undefined &&
+    published_year === undefined &&
+    genre === undefined &&
+    is_available === undefined
+  ) {
+    return res.status(400).json({ error: "No fields provided for update" });
+  }
+
+  try {
+    const result = await pool.query(
+      `UPDATE books
+       SET title = COALESCE($1, title),
+           author = COALESCE($2, author),
+           published_year = COALESCE($3, published_year),
+           genre = COALESCE($4, genre),
+           is_available = COALESCE($5, is_available)
+       WHERE id = $6
+       RETURNING *`,
+      [title ?? null, author ?? null, published_year ?? null, genre ?? null, is_available ?? null, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Book not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+
+// ========================================
+// REPLACE EVERYTHING - PUT /api/books/:id
+// ========================================
+
+router.put("/:id", authenticateToken, validateResource(replaceBookSchema), async (req, res) => {
+  const { id } = req.params;
+  const { title, author, published_year, genre, is_available }: Book = req.body;
+
+  try {
+    const result = await pool.query(
+      `UPDATE books
+       SET title = $1,
+           author = $2,
+           published_year = $3,
+           genre = $4,
+           is_available = $5
+       WHERE id = $6
+       RETURNING *`,
+      [title, author, published_year, genre ?? "fiction", is_available ?? true, id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Book not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+
+// ========================================
+// DELETE - DELETE /api/books/:id
+// ========================================
+
+router.delete("/:id", authenticateToken, validateResource(bookIdSchema), async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query(`DELETE FROM books WHERE id = $1 RETURNING *`, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Book not found" });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
+
+
+export default router;
+```
+
+In `index.ts`:
+
+```ts
+import bookRoutes from "./bookRoutes";
+
+app.use("/api/books", bookRoutes);
+```
+
+---
+
+# Part 3 - Full examples
+
+## 9. Full example: PulseDesk
 
 Spec: login = "Zod Login", POST = `createIncidentSchema`,
 PATCH = `updateIncidentSchema` that updates **Status/Severity** only.
@@ -440,7 +902,7 @@ export const updateIncidentSchema = z.object({
 
 ---
 
-## 4. Full example: SERIAL (number) ids
+## 10. Full example: SERIAL (number) ids
 
 Same as practice-c. Use this when `schema.sql` has `id SERIAL PRIMARY KEY`.
 
@@ -499,7 +961,7 @@ export const updateTaskSchema = z.object({
 
 ---
 
-## 5. Full example: username login + register
+## 11. Full example: username login + register
 
 ```ts
 import { z } from "zod";
@@ -586,7 +1048,7 @@ if (password !== confirm_password) {
 
 ---
 
-## 6. Full example: query, params only, nested route, list in the body
+## 12. Full example: query, params only, nested route, list in the body
 
 A shop with categories, products and orders.
 
@@ -709,7 +1171,9 @@ const pageNumber = Number(page ?? "1");
 
 ---
 
-## 7. Tables
+# Part 4 - Reference
+
+## 13. Tables
 
 ### schema.sql column -> Zod field
 
@@ -752,7 +1216,7 @@ The route searches the same column: `WHERE username = $1`, `WHERE student_no = $
 
 ---
 
-## 8. Final check
+## 14. Final check
 
 | Check | What goes wrong if you skip it |
 |---|---|
