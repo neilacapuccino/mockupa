@@ -1,14 +1,26 @@
 {
   "name": "variations",
   "private": true,
+  "type": "module",
   "scripts": {
-    "setup": "npm i --prefix 1-studynotes/backend && npm i --prefix 2-libraryhub/backend && npm i --prefix 3-stockroom/backend && npm i --prefix frontend",
-    "db": "node setup-db.js",
-    "dev": "concurrently -n notes,library,stock,page -c blue,green,magenta,cyan \"npm run dev --prefix 1-studynotes/backend\" \"npm run dev --prefix 2-libraryhub/backend\" \"npm run dev --prefix 3-stockroom/backend\" \"npm run dev --prefix frontend\""
+    "setup": "node setup.cjs",
+    "db": "node setup-db.cjs",
+    "page": "vite",
+    "dev": "concurrently -n notes,library,stock,board,staff,cafe,class,forum,events,page -c blue,green,magenta,yellow,red,gray,cyan,green,magenta,white \"npm run dev --prefix 1-studynotes/backend\" \"npm run dev --prefix 2-libraryhub/backend\" \"npm run dev --prefix 3-stockroom/backend\" \"npm run dev --prefix 4-projectboard/backend\" \"npm run dev --prefix 5-staffdirectory/backend\" \"npm run dev --prefix 6-cafeorders/backend\" \"npm run dev --prefix 7-classportal/backend\" \"npm run dev --prefix 8-forumboard/backend\" \"npm run dev --prefix 9-eventpass/backend\" \"npm run page\""
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
     "concurrently": "^10.0.5",
     "dotenv": "^18.0.3",
-    "pg": "^8.23.0"
+    "pg": "^8.23.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0"
   }
 }

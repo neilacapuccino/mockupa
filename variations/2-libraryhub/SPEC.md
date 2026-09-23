@@ -64,6 +64,7 @@ export type Action =
 - reader@library.com  ("Eloquent JavaScript" is already borrowed by this user)
 
 ## Run it
-See `variations/README.md` — one command starts all 3 backends + the page.
-
-Frontend code for this variation: `variations/frontend/src/libraryhub/`
+- **All 6 at once:** see `variations/README.md` (`npm run dev` in the variations folder).
+- **On its own** (e.g. after copying `backend/` and `frontend/` into another project):
+  - backend (port **5002**): `cd backend` → `npm i` → create the `libraryhub` database and run `schema.sql` → `npm run dev`
+  - frontend: `cd frontend` → `npm i` → `npm run dev`

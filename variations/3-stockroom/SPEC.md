@@ -66,6 +66,7 @@ Things to try: press **-1** on "HDMI Adapter" (qty 0) → "Not enough stock".
 Add an item with SKU `CAB-001` → "SKU already exists".
 
 ## Run it
-See `variations/README.md` — one command starts all 3 backends + the page.
-
-Frontend code for this variation: `variations/frontend/src/stockroom/`
+- **All 6 at once:** see `variations/README.md` (`npm run dev` in the variations folder).
+- **On its own** (e.g. after copying `backend/` and `frontend/` into another project):
+  - backend (port **5003**): `cd backend` → `npm i` → create the `stockroom` database and run `schema.sql` → `npm run dev`
+  - frontend: `cd frontend` → `npm i` → `npm run dev`

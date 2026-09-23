@@ -58,6 +58,7 @@ export type Action =
 Log in as each one: you must only see **your own** notes.
 
 ## Run it
-See `variations/README.md` — one command starts all 3 backends + the page.
-
-Frontend code for this variation: `variations/frontend/src/studynotes/`
+- **All 6 at once:** see `variations/README.md` (`npm run dev` in the variations folder).
+- **On its own** (e.g. after copying `backend/` and `frontend/` into another project):
+  - backend (port **5001**): `cd backend` → `npm i` → create the `studynotes` database and run `schema.sql` → `npm run dev`
+  - frontend: `cd frontend` → `npm i` → `npm run dev`
