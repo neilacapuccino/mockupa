@@ -17,7 +17,7 @@ ni src/index.ts, src/db.ts, src/types.ts, src/schemas.ts, src/validate.ts, src/a
 Database (from the `backend` folder):
 
 ```powershell
-& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -c "CREATE DATABASE servicehub;"   # <-change name
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -c "CREATE DATABASE servicehub;"
 & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d servicehub -f ".\schema.sql"
 & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d servicehub -c "\dt"
 ```
