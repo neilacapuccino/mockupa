@@ -3,7 +3,7 @@
 ## Backend (terminal 1)
 
 ```powershell
-mkdir pulsedesk; cd pulsedesk; mkdir backend; cd backend
+mkdir midtermcode; cd midtermcode; mkdir backend; cd backend
 npm init -y
 npm i express pg dotenv zod jsonwebtoken bcryptjs cors
 npm i -D typescript tsx @types/node @types/express @types/pg @types/jsonwebtoken @types/cors
